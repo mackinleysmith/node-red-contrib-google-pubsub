@@ -1,0 +1,20 @@
+{
+    "google-pubsub": {
+        "label": {
+            "pubsub-topic":"Topic",
+        }
+        "placeholder": {
+        },
+        "status": {
+            "publishing":"publishing",
+            "waiting":"waiting",
+            "failed":"failed"
+        },
+        "warn": {
+        },
+        "errors": {
+            "ratelimit":"rate limit hit",
+            "limitrate":"limiting rate"
+        }
+    }
+}

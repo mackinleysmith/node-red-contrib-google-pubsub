@@ -1,0 +1,56 @@
+<script type="text/x-red" data-template-name="google-pubsub out">
+  <div class="form-row">
+    <label for="node-input-pubsub_topic">
+      <i class="fa fa-comment"></i> <span data-i18n="google-pubsub.label.pubsub-topic"></span>
+      Topic
+    </label>
+    <input type="text" id="node-input-pubsub_topic">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+    <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="google-pubsub out">
+  <p>Google Pubsub out node. Publishes the <code>msg.payload</code> via Google Pubsub.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+            <span class="property-type">object | buffer</span>
+        </dt>
+    <dd> the JavaScript object payload of the message to publish. </dd>
+    <dt class="optional">params
+            <span class="property-type">map&ltstring, string&gt</span>
+        </dt>
+    <dd> pubsub message attributes as a key:value pairs object. </dd>
+  </dl>
+
+  <h3>References</h3>
+  <ul>
+    <li><a href="https://cloud.google.com/pubsub/docs/overview">Google Pubsub docs</a></li>
+  </ul>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('google-pubsub out', {
+    category: 'google-output',
+    color: "#E6E0F8",
+    defaults: {
+      pubsub_topic: { value: "", required: true },
+      name: { value: "pubsub" }
+    },
+    inputs: 1,
+    outputs: 0,
+    icon: "pubsub.png",
+    align: "right",
+    label: function() {
+      return this.name;
+    },
+    paletteLabel: function(){
+      return 'pubsub';
+    },
+    inputLabels: 'msg.payload'
+  });
+</script>
