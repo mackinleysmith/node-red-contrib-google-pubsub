@@ -2,7 +2,7 @@
     "google-pubsub": {
         "label": {
             "pubsub-topic":"Topic",
-        }
+        },
         "placeholder": {
         },
         "status": {
