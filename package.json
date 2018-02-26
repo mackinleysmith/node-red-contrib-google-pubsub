@@ -10,7 +10,7 @@
     "pubsub"
   ],
   "dependencies": {
-    "nodejs-helpers": "^1.1.3"
+    "nodejs-helpers": "^1.1.4"
   },
   "node-red": {
     "nodes": {

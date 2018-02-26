@@ -54,3 +54,142 @@
     inputLabels: 'msg.payload'
   });
 </script>
+
+<script type="text/x-red" data-template-name="google-pubsub in">
+  <div class="form-row">
+    <label for="node-input-pubsub_topic">
+      <i class="fa fa-comment"></i> <span data-i18n="google-pubsub.label.pubsub-topic"></span>
+      Topic
+    </label>
+    <input type="text" id="node-input-pubsub_topic">
+  </div>
+  <div class="form-row">
+    <label for="node-input-pubsub_subscription">
+      <i class="fa fa-comment"></i> <span data-i18n="google-pubsub.label.pubsub-subscription"></span>
+      Subscription
+    </label>
+    <input type="text" id="node-input-pubsub_subscription">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+    <input type="text" id="node-input-name" data-i18n="[placeholder]node-red:common.label.name">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="google-pubsub in">
+  <p>Google Pubsub in node. Pulls messages from Google Pubsub, then <code>msg.payload</code>.</p>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload
+      <span class="property-type">object</span>
+    </dt>
+    <dd> the JavaScript object payload of the message received. </dd>
+    <dt>id
+      <span class="property-type">string</span>
+    </dt>
+    <dd> pubsub message id. </dd>
+    <dt>connectionId
+      <span class="property-type">string</span>
+    </dt>
+    <dd> pubsub subscription connection id. </dd>
+    <dt>ackId
+      <span class="property-type">string</span>
+    </dt>
+    <dd> pubsub subscription ack id used to acknowledge/modifyAckDeadline. </dd>
+    <dt>received
+      <span class="property-type">number</span>
+    </dt>
+    <dd> timestamp when Pub/Sub received the message. </dd>
+    <dt>attributes
+      <span class="property-type">map&ltstring, string&gt</span>
+    </dt>
+    <dd> pubsub message attributes as a key:value pairs object. </dd>
+  </dl>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>connectionId
+      <span class="property-type">string</span>
+    </dt>
+    <dd> pubsub subscription connection id. </dd>
+    <dt>ackId
+      <span class="property-type">string</span>
+    </dt>
+    <dd> pubsub subscription ack id used to acknowledge/modifyAckDeadline. </dd>
+    <dt>received
+      <span class="property-type">number</span>
+    </dt>
+    <dd> timestamp when Pub/Sub received the message. </dd>
+  </dl>
+
+  <h3>References</h3>
+  <ul>
+    <li><a href="https://cloud.google.com/pubsub/docs/overview">Google Pubsub docs</a></li>
+  </ul>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('google-pubsub in', {
+    category: 'google-input',
+    color: "#E6E0F8",
+    defaults: {
+      pubsub_topic: { value: "", required: true },
+      pubsub_subscription: { value: "", required: true },
+      active: { value: false },
+      name: { value: "pubsub" }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "pubsub.png",
+    align: "right",
+    button: {
+      toggle: "active",
+      onclick: function() {
+        var label = this.name||"debug";
+        var node = this;
+        $.ajax({
+          url: "google-pubsub/"+this.id+"/"+(this.active?"enable":"disable"),
+          type: "POST",
+          success: function(resp, textStatus, xhr) {
+            var historyEvent = {
+              t:'edit',
+              node:node,
+              changes:{
+                active: !node.active
+              },
+              dirty:node.dirty,
+              changed:node.changed
+            };
+            node.changed = true;
+            node.dirty = true;
+            RED.nodes.dirty(true);
+            RED.history.push(historyEvent);
+            RED.view.redraw();
+            if (xhr.status == 200) {
+              RED.notify(node._("google-pubsub.activated",{label:label}),"success");
+            } else if (xhr.status == 201) {
+              RED.notify(node._("google-pubsub.deactivated",{label:label}),"success");
+            }
+          },
+          error: function(jqXHR,textStatus,errorThrown) {
+            if (jqXHR.status == 404) {
+              RED.notify(node._("common.notification.error", {message: node._("common.notification.errors.not-deployed")}),"error");
+            } else if (jqXHR.status === 0) {
+              RED.notify(node._("common.notification.error", {message: node._("common.notification.errors.no-response")}),"error");
+            } else {
+              RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.unexpected",{status:err.status,message:err.response})}),"error");
+            }
+          }
+        });
+      }
+    },
+    label: function() {
+      return this.name;
+    },
+    paletteLabel: function(){
+      return 'pubsub';
+    },
+    outputLabels: 'msg.payload'
+  });
+</script>
