@@ -41,11 +41,12 @@ module.exports = function(RED) {
   }
   function GooglePubsubInNode(n) {
     RED.nodes.createNode(this, n);
+    this.gcp_project_id = n.gcp_project_id;
     this.topic = n.topic;
     this.pubsub_topic = n.pubsub_topic;
     this.pubsub_subscription = n.pubsub_subscription;
     this.active = (n.active === null || typeof n.active === "undefined") || n.active;
-    this.pubsubClient = PubSub();
+    this.pubsubClient = PubSub({ projectId: this.gcp_project_id });
     this.subscription = this.pubsubClient.subscription(this.pubsub_subscription);
     const node = this;
 
