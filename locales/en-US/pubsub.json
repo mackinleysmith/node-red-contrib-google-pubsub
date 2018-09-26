@@ -1,7 +1,7 @@
 {
     "google-pubsub": {
         "label": {
-            "gsc-project-id": "GCP Project ID",
+            "gcp-project-id": "GCP Project ID",
             "pubsub-topic":"My Topic"
         },
         "placeholder": {
