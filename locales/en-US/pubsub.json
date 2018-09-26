@@ -1,7 +1,7 @@
 {
     "google-pubsub": {
         "label": {
-            "pubsub-topic":"Topic",
+            "pubsub-topic":"My Topic"
         },
         "placeholder": {
         },
