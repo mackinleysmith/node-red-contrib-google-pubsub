@@ -49,7 +49,6 @@ module.exports = function(RED) {
     this.pubsubClient = PubSub({ projectId: this.gcp_project_id });
     this.subscription = this.pubsubClient.subscription(this.pubsub_subscription);
     const node = this;
-    node.error('HERE');
 
     node.status({ fill: "blue", shape: "dot", text: "google-pubsub.status.waiting" });
 
@@ -69,6 +68,7 @@ module.exports = function(RED) {
         node.send(msg);
 
         node.status({ fill: "green", shape: "dot", text: "google-pubsub.status.received" });
+        message.ack();
       } catch (err) {
         node.error(err);
         node.status({ fill: "red", shape: "ring", text: "google-pubsub.status.failed" });
