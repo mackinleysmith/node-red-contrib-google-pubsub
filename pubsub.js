@@ -49,12 +49,12 @@ module.exports = function(RED) {
     this.pubsubClient = PubSub({ projectId: this.gcp_project_id });
     this.subscription = this.pubsubClient.subscription(this.pubsub_subscription);
     const node = this;
-    console.log('HERE');
+    node.error('HERE');
 
     node.status({ fill: "blue", shape: "dot", text: "google-pubsub.status.waiting" });
 
     const messageHandler = function messageHandler(message) {
-      console.log('HANDLING');
+      node.error('HANDLING');
       node.status({ fill: "green", shape: "ring", text: "google-pubsub.status.receiving" });
 
       try {
@@ -95,7 +95,7 @@ module.exports = function(RED) {
 
     this.on("input", function(msg) {
       try {
-        console.log('ACKING');
+        node.error('ACKING');
         node.subscription.ack_(msg);
       } catch (err) {
         node.error(err);
