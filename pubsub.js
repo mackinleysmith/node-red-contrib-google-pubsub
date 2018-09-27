@@ -53,7 +53,6 @@ module.exports = function(RED) {
     node.status({ fill: "blue", shape: "dot", text: "google-pubsub.status.waiting" });
 
     const messageHandler = function messageHandler(message) {
-      node.error('HANDLING');
       node.status({ fill: "green", shape: "ring", text: "google-pubsub.status.receiving" });
 
       try {
@@ -95,7 +94,6 @@ module.exports = function(RED) {
 
     this.on("input", function(msg) {
       try {
-        node.error('ACKING');
         node.subscription.ack_(msg);
       } catch (err) {
         node.error(err);
