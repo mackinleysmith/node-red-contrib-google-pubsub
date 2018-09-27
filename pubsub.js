@@ -46,16 +46,15 @@ module.exports = function(RED) {
     this.pubsub_topic = n.pubsub_topic;
     this.pubsub_subscription = n.pubsub_subscription;
     this.active = (n.active === null || typeof n.active === "undefined") || n.active;
-    this.pubsubClient = PubSub({
-      projectId: this.gcp_project_id,
-      keyFilename: '/usr/src/node-red/service_account_key.json',
-    });
+    this.pubsubClient = PubSub({ projectId: this.gcp_project_id });
     this.subscription = this.pubsubClient.subscription(this.pubsub_subscription);
     const node = this;
+    console.log('HERE');
 
     node.status({ fill: "blue", shape: "dot", text: "google-pubsub.status.waiting" });
 
     const messageHandler = function messageHandler(message) {
+      console.log('HANDLING');
       node.status({ fill: "green", shape: "ring", text: "google-pubsub.status.receiving" });
 
       try {
@@ -96,6 +95,7 @@ module.exports = function(RED) {
 
     this.on("input", function(msg) {
       try {
+        console.log('ACKING');
         node.subscription.ack_(msg);
       } catch (err) {
         node.error(err);
